@@ -42,30 +42,24 @@ Note that this walkthrough assumes throughout to operate in the us-east-1 region
 
 ### Cluster provisioning
 
-Create an EKS cluster with eksctl using the following command:
+Create an EKS cluster-1 with eksctl using the following command:
 ```
-eksctl create cluster --name=eksc2 --nodes=3 --alb-ingress-access 
---region=us-east-1 --ssh-access --asg-access  --full-ecr-access  
---external-dns-access --appmesh-access --vpc-cidr 172.16.0.0/16
---auto-kubeconfig
+eksctl create cluster --name=eks-cluster-1 --nodes=3 --alb-ingress-access --region=us-east-1 --asg-access --full-ecr-access --external-dns-access --appmesh-access  --auto-kubeconfig --vpc-cidr 172.16.0.0/16
+
 #[✔]  EKS cluster "eksc2-useast1" in "us-east-1" region is ready
 ```
 
-Once cluster creation is complete open an other tab and create an other EKS cluster with eksctl using the following command:
-Note: Use the public and private subnets created as part of cluster1 in this command. See this (https://eksctl.io/usage/vpc-networking/) for more details.
+Create an EKS cluster-2 with eksctl using the following command:
+
 ```
-eksctl create cluster --name=eksc1 --nodes=2 --alb-ingress-access 
---region=us-east-1 --ssh-access --asg-access  --full-ecr-access  
---external-dns-access --appmesh-access  --auto-kubeconfig 
---vpc-private-subnets=<comma seperated private subnets>
---vpc-public-subnets=<comma seperated public subnets>
+eksctl create cluster --name=eks-cluster-2 --nodes=3 --alb-ingress-access --region=us-east-1 --asg-access --full-ecr-access --external-dns-access --appmesh-access  --auto-kubeconfig --vpc-cidr 172.17.0.0/16
 #[✔]  EKS cluster "eksc1" in "us-east-1" region is ready
 ```
 
 When completed, update the KUBECONFIG environment variable in each tab according to the eksctl output, repectively:
 ```
-export KUBECONFIG=~/.kube/eksctl/clusters/eksc2
-export KUBECONFIG=~/.kube/eksctl/clusters/eksc1 
+export KUBECONFIG=~/.kube/eksctl/clusters/eks-cluster-1
+export KUBECONFIG=~/.kube/eksctl/clusters/eks-cluster-2 
 Note: Do this respective tabs
 ```
 
